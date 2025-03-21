@@ -1,0 +1,34 @@
+[
+  {
+    "title": "JavaScript Basics",
+    "description": "A quiz about JS fundamentals",
+    "questions": [
+      {
+        "question": "What is `typeof null`?",
+        "options": ["object", "null", "undefined", "number"],
+        "answer": "object"
+      },
+      {
+        "question": "Which keyword declares a constant variable?",
+        "options": ["var", "let", "const", "function"],
+        "answer": "const"
+      }
+    ]
+  },
+  {
+    "title": "React Fundamentals",
+    "description": "Test your knowledge of React",
+    "questions": [
+      {
+        "question": "What is JSX?",
+        "options": [
+          "A CSS framework",
+          "A JavaScript syntax extension",
+          "A React component",
+          "A function"
+        ],
+        "answer": "A JavaScript syntax extension"
+      }
+    ]
+  }
+]

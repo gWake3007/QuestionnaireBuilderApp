@@ -16,7 +16,6 @@
     "@reduxjs/toolkit": "^2.6.1",
     "axios": "^1.8.4",
     "clsx": "^2.1.1",
-    "dotenv": "^16.4.7",
     "firebase": "^11.5.0",
     "formik": "^2.4.6",
     "immer": "^10.1.1",
