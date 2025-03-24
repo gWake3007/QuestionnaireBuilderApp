@@ -1,11 +1,6 @@
-import React, { useEffect } from 'react';
-import { importQuizzes } from './utils/importQuizzes.js';
+import React from 'react';
 
 function App() {
-  useEffect(() => {
-    importQuizzes();
-  }, []);
-
   return <h1>Quiz Catalog</h1>;
 }
 
