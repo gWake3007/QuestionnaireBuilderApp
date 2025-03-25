@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchQuizzes, addQuiz, updateQuiz, deleteQuiz } from './quizzesThunks';
+import { fetchQuizzes, addQuiz, updateQuiz, deleteQuiz } from './operations.js';
 
 const initialState = {
   quizzesItems: [],

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isOpen: false,
+  modalType: null, // 'details' | 'confirmDelete'
   quizId: null,
 };
 
@@ -11,11 +12,13 @@ const modalSlice = createSlice({
   reducers: {
     openModal: (state, { payload }) => {
       state.isOpen = true;
-      state.contactId = payload;
+      state.modalType = payload.type; // 'details' або 'confirmDelete'
+      state.quizId = payload.quizId;
     },
     closeModal: state => {
       state.isOpen = false;
-      state.contactId = null;
+      state.modalType = null;
+      state.quizId = null;
     },
   },
 });

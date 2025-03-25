@@ -7,7 +7,7 @@ const Quiz_Card = ({ quiz }) => {
   const dispatch = useDispatch();
 
   const handleOpenModal = () => {
-    dispatch(openModal(quiz.id));
+    dispatch(openModal({ type: 'details', quizId: quiz.id }));
   };
   return (
     <>
