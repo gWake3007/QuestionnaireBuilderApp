@@ -10,10 +10,10 @@ const filtersSlice = createSlice({
   initialState,
   reducers: {
     setNumberOfQuestionsFilter: (state, { payload }) => {
-      state.theNumberOfQuestions = payload;
+      state.theNumberOfQuestions = payload ?? '';
     },
     setNameFilter: (state, { payload }) => {
-      state.name = payload;
+      state.name = payload ?? '';
     },
   },
 });

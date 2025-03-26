@@ -1,4 +1,4 @@
 export const selectNumberOfQuestionsFilter = state =>
-  state.filters.theNumberOfQuestions;
+  state.filters?.theNumberOfQuestions ?? '';
 
-export const selectNameFilter = state => state.filters.name;
+export const selectNameFilter = state => state.filters?.name ?? '';

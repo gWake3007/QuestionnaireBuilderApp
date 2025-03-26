@@ -13,11 +13,13 @@ export const selectError = state => state.quiz.error;
 export const selectSelectedQuiz = state => state.quiz.selectedQuiz;
 
 export const selectFilteredQuizzes = createSelector(
-  [selectQuizzes, selectNumberOfQuestionsFilter, selectNameFilter],
-  (quizzes, numberOfQuestionsFilter, nameFilter) =>
+  [selectQuizzes, selectNameFilter, selectNumberOfQuestionsFilter],
+  (quizzes, nameFilter, numberOfQuestionsFilter) =>
     quizzes.filter(
       quiz =>
-        quiz.theNumberOfQuestions.includes(numberOfQuestionsFilter) &&
-        quiz.name.toLowerCase().includes(nameFilter.toLowerCase())
+        (quiz.name ?? '')
+          .toLowerCase()
+          .includes((nameFilter ?? '').toLowerCase()) &&
+        (quiz.theNumberOfQuestions ?? '').includes(numberOfQuestionsFilter)
     )
 );

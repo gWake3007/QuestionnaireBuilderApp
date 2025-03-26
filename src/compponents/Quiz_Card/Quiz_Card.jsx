@@ -14,7 +14,7 @@ const Quiz_Card = ({ quiz }) => {
       Quiz_Card
       <li className={css.card}>
         <button className={css.btn} type="button" onClick={handleOpenModal}>
-          Modal button
+          OptionsModal
           <CgMenuGridO />
         </button>
         <h2 className={css.title}>{quiz.title}</h2>
