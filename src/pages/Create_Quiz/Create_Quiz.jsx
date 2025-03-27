@@ -1,7 +1,25 @@
-import React from "react";
+import { useDispatch } from 'react-redux';
+import Quiz_Form from '../../compponents/Quiz_Form/Quiz_Form.jsx';
+import { addQuiz } from '../../redux/quiz/operations.js';
 
-const Create_Quiz = () => {
-  return <div>Create_Quiz</div>;
+const CreateQuizPage = () => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = (values, { resetForm }) => {
+    dispatch(addQuiz(values));
+    resetForm();
+  };
+
+  return (
+    <div>
+      <h2>Створити новий квіз</h2>
+      <Quiz_Form
+        initialValues={{ title: '', description: '', theNumberOfQuestions: '' }}
+        onSubmit={handleSubmit}
+        isEdit={false}
+      />
+    </div>
+  );
 };
 
-export default Create_Quiz;
+export default CreateQuizPage;
