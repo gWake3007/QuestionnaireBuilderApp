@@ -20,6 +20,8 @@ export const selectFilteredQuizzes = createSelector(
         (quiz.name ?? '')
           .toLowerCase()
           .includes((nameFilter ?? '').toLowerCase()) &&
-        (quiz.theNumberOfQuestions ?? '').includes(numberOfQuestionsFilter)
+        `${quiz.theNumberOfQuestions ?? ''}`.includes(
+          `${numberOfQuestionsFilter}`
+        )
     )
 );

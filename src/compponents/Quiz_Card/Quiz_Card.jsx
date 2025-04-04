@@ -20,7 +20,7 @@ const Quiz_Card = ({ quiz }) => {
         <h2 className={css.title}>{quiz.title}</h2>
         <p className={css.description}>{quiz.description}</p>
         <p className={css.question}>
-          Question:<span>{quiz.length + 1}</span>
+          Question:<span>{quiz.length ?? 'Немає данних'}</span>
         </p>
       </li>
     </>
