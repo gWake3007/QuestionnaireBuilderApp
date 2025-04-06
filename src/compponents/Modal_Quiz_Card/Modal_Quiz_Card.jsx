@@ -61,8 +61,18 @@ const Modal_Quiz_Card = ({ quizzes }) => {
               <>
                 <h2>{quiz.title}</h2>
                 <p>{quiz.description}</p>
-                <Link to={`/quiz/${quiz.id}`}>📝 Open Quiz</Link>
-                <Link to={`/update/${quiz.id}`}>✏️ Update Quiz</Link>
+                <Link
+                  onClick={() => dispatch(closeModal())}
+                  to={`/quiz/${quiz.id}`}
+                >
+                  📝 Open Quiz
+                </Link>
+                <Link
+                  onClick={() => dispatch(closeModal())}
+                  to={`/update/${quiz.id}`}
+                >
+                  ✏️ Update Quiz
+                </Link>
                 <button
                   onClick={() =>
                     dispatch(

@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchQuizzes, addQuiz, updateQuiz, deleteQuiz } from './operations.js';
+import {
+  fetchQuizzes,
+  fetchQuizById,
+  addQuiz,
+  updateQuiz,
+  deleteQuiz,
+} from './operations.js';
 
 const initialState = {
   quizzesItems: [],
@@ -31,6 +37,26 @@ const quizzesSlice = createSlice({
         state.quizzesItems = payload;
       })
       .addCase(fetchQuizzes.rejected, (state, { payload }) => {
+        state.status = 'failed';
+        state.loading = false;
+        state.error = payload;
+      })
+
+      //? Take quiz
+      .addCase(fetchQuizById.pending, state => {
+        state.status = 'loading';
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchQuizById.fulfilled, (state, { payload }) => {
+        state.status = 'succeeded';
+        state.loading = false;
+        const exists = state.quizzesItems.find(q => q.id === payload.id);
+        if (!exists) {
+          state.quizzesItems.push(payload);
+        }
+      })
+      .addCase(fetchQuizById.rejected, (state, { payload }) => {
         state.status = 'failed';
         state.loading = false;
         state.error = payload;

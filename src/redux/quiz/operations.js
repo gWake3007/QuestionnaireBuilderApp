@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 import { db } from '../../api/firebaseAPI.js';
 import {
   collection,
+  getDoc,
   getDocs,
   addDoc,
   updateDoc,
@@ -17,6 +18,24 @@ export const fetchQuizzes = createAsyncThunk(
     try {
       const querySnapshot = await getDocs(collection(db, 'quizzes'));
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//? Take  quiz
+export const fetchQuizById = createAsyncThunk(
+  'quizzes/fetchQuizById',
+  async (id, { rejectWithValue }) => {
+    try {
+      const docRef = doc(db, 'quizzes', id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { id, ...docSnap.data() };
+      } else {
+        return rejectWithValue('Квіз не знайдено');
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }
