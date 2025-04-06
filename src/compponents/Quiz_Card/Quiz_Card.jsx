@@ -7,6 +7,7 @@ const Quiz_Card = ({ quiz }) => {
   const dispatch = useDispatch();
 
   const handleOpenModal = () => {
+    console.log('Modal open triggered with ID:', quiz.id);
     dispatch(openModal({ type: 'details', quizId: quiz.id }));
   };
   return (

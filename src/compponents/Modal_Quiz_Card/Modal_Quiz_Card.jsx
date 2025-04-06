@@ -1,22 +1,25 @@
 import css from './Modal_Quiz_Card.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectModalState } from '../../redux/modal/selectors.js';
 import { deleteQuiz } from '../../redux/quiz/operations.js';
 import { closeModal, openModal } from '../../redux/modal/slice.js';
 import { Link } from 'react-router-dom';
 
 const Modal_Quiz_Card = ({ quizzes }) => {
   const dispatch = useDispatch();
-  const { isOpen, modalType, quizId } = useSelector(selectModalState);
+  const { isOpen, modalType, quizId } = useSelector(state => state.modal);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const quiz = quizzes.find(q => q.id === quizId);
 
-  if (!quiz) return null;
+  if (!quiz) {
+    return null;
+  }
   return (
     <div className={css.modal}>
-      <div className="modal-content">
+      <div className={css.modal_content}>
         {modalType === 'details' ? (
           <>
             <h2>{quiz.title}</h2>
