@@ -7,6 +7,12 @@ const CreateQuizPage = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = (values, { resetForm }) => {
+    // Валідація чи є питання
+    if (values.questions.length === 0) {
+      alert('Додайте хоча б одне питання');
+      return;
+    }
+
     dispatch(addQuiz(values));
     resetForm();
   };
@@ -16,7 +22,12 @@ const CreateQuizPage = () => {
       <Link to={'/'}>back</Link>
       <h2>Створити новий квіз</h2>
       <Quiz_Form
-        initialValues={{ title: '', description: '', theNumberOfQuestions: '' }}
+        initialValues={{
+          title: '',
+          description: '',
+          theNumberOfQuestions: '',
+          questions: [],
+        }}
         onSubmit={handleSubmit}
         isEdit={false}
       />

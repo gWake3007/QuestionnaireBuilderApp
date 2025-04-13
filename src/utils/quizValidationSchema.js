@@ -6,4 +6,5 @@ export const validationSchema = Yup.object({
   theNumberOfQuestions: Yup.number()
     .required("Обов'язкове поле")
     .min(1, 'Мінімум 1 питання'),
+  questions: Yup.array(),
 });

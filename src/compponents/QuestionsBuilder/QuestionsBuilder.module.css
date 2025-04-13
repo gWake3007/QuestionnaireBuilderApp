@@ -1,0 +1,19 @@
+.wrapper {
+  margin-top: 20px;
+  padding: 10px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+}
+
+.questionBlock {
+  background-color: #ca1111;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+.option {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+}
