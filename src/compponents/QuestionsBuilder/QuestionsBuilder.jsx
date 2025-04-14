@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { FieldArray, Field, useFormikContext } from 'formik';
 import styles from './QuestionsBuilder.module.css';
 
@@ -5,7 +6,9 @@ const QuestionsBuilder = () => {
   const { values, setFieldValue } = useFormikContext();
 
   useEffect(() => {
-    setFieldValue('theNumberOfQuestions', values.questions.length);
+    if (Array.isArray(values.questions)) {
+      setFieldValue('theNumberOfQuestions', values.questions.length);
+    }
   }, [values.questions, setFieldValue]);
 
   return (
@@ -20,8 +23,9 @@ const QuestionsBuilder = () => {
                 <label>
                   Текст питання:
                   <Field
-                    name={`questions[${index}].questionText`}
+                    name={`questions[${index}].question`}
                     placeholder="Введіть питання"
+                    type="text"
                   />
                 </label>
 
@@ -34,17 +38,17 @@ const QuestionsBuilder = () => {
                   </Field>
                 </label>
 
-                {/* Варіанти відповідей (якщо тип не text) */}
                 {question.type !== 'text' && (
                   <FieldArray name={`questions[${index}].options`}>
                     {({ push, remove }) => (
                       <div>
                         <label>Варіанти відповіді:</label>
-                        {question.options?.map((option, optIndex) => (
+                        {(question.options || []).map((option, optIndex) => (
                           <div key={optIndex} className={styles.option}>
                             <Field
                               name={`questions[${index}].options[${optIndex}]`}
                               placeholder="Варіант"
+                              type="text"
                             />
                             <button
                               type="button"
@@ -62,6 +66,17 @@ const QuestionsBuilder = () => {
                   </FieldArray>
                 )}
 
+                {question.type !== 'text' && (
+                  <label>
+                    Правильна відповідь:
+                    <Field
+                      name={`questions[${index}].correctAnswer`}
+                      placeholder="Введіть правильну відповідь"
+                      type="text"
+                    />
+                  </label>
+                )}
+
                 <button type="button" onClick={() => remove(index)}>
                   🗑 Видалити питання
                 </button>
@@ -74,9 +89,10 @@ const QuestionsBuilder = () => {
               type="button"
               onClick={() =>
                 push({
-                  questionText: '',
+                  question: '',
                   type: 'text',
                   options: [],
+                  correctAnswer: '',
                 })
               }
             >

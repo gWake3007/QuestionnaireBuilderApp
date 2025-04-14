@@ -1,20 +1,19 @@
 import * as Yup from 'yup';
 
 export const validationSchema = Yup.object({
-  title: Yup.string().required("Обов'язкове поле"),
-  description: Yup.string().required("Обов'язкове поле"),
-  theNumberOfQuestions: Yup.number().min(1, 'Мінімум 1 питання'),
+  title: Yup.string().required('Назва обовʼязкова'),
+  description: Yup.string().required('Опис обовʼязковий'),
+  theNumberOfQuestions: Yup.number().required().min(1, 'Мінімум одне питання'),
+
   questions: Yup.array()
     .of(
-      Yup.object({
-        questionText: Yup.string().required('Питання обов’язкове'),
-        type: Yup.string().required(),
-        options: Yup.array().when('type', {
-          is: val => val !== 'text',
-          then: Yup.array().min(1, 'Мінімум один варіант').required(),
-          otherwise: Yup.array().notRequired(),
-        }),
+      Yup.object().shape({
+        question: Yup.string().required('Питання обовʼязкове'),
+        options: Yup.array()
+          .of(Yup.string().required('Опція не може бути пустою'))
+          .min(2, 'Мінімум 2 варіанти'),
+        correctAnswer: Yup.string().required('Оберіть правильну відповідь'),
       })
     )
-    .min(1, 'Мінімум одне питання'),
+    .min(1, 'Додайте хоча б одне питання'),
 });
