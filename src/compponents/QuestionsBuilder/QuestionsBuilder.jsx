@@ -2,7 +2,11 @@ import { FieldArray, Field, useFormikContext } from 'formik';
 import styles from './QuestionsBuilder.module.css';
 
 const QuestionsBuilder = () => {
-  const { values } = useFormikContext();
+  const { values, setFieldValue } = useFormikContext();
+
+  useEffect(() => {
+    setFieldValue('theNumberOfQuestions', values.questions.length);
+  }, [values.questions, setFieldValue]);
 
   return (
     <div className={styles.wrapper}>

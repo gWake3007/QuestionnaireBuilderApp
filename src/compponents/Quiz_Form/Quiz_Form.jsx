@@ -19,11 +19,6 @@ const Quiz_Form = ({ initialValues, onSubmit, isEdit = false }) => {
             type="text"
             placeholder="Опис квізу"
           />
-          <Quiz_form_input
-            name="theNumberOfQuestions"
-            type="number"
-            placeholder="Кількість питань"
-          />
           <QuestionsBuilder />
           <button type="submit" className={css.submitBtn}>
             {isEdit ? 'Оновити квіз' : 'Створити квіз'}

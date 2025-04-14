@@ -21,7 +21,8 @@ const Quiz_Card = ({ quiz }) => {
         <h2 className={css.title}>{quiz.title}</h2>
         <p className={css.description}>{quiz.description}</p>
         <p className={css.question}>
-          Question:<span>{quiz.length ?? 'Немає данних'}</span>
+          Кількість питань:
+          <span>{quiz.theNumberOfQuestions ?? 'Немає даних'}</span>
         </p>
       </li>
     </>

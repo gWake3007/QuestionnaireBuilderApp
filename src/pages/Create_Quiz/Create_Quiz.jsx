@@ -25,7 +25,7 @@ const CreateQuizPage = () => {
         initialValues={{
           title: '',
           description: '',
-          theNumberOfQuestions: '',
+          theNumberOfQuestions: 0,
           questions: [],
         }}
         onSubmit={handleSubmit}
