@@ -34,6 +34,7 @@ const EditQuizPage = () => {
           title: quiz.title,
           description: quiz.description,
           theNumberOfQuestions: quiz.theNumberOfQuestions,
+          questions: quiz.questions || [],
         }}
         onSubmit={handleSubmit}
         isEdit={true}

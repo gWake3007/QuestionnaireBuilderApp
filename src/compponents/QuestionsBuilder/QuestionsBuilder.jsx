@@ -4,6 +4,7 @@ import styles from './QuestionsBuilder.module.css';
 
 const QuestionsBuilder = () => {
   const { values, setFieldValue } = useFormikContext();
+  if (!Array.isArray(values.questions)) return null;
 
   useEffect(() => {
     if (Array.isArray(values.questions)) {
