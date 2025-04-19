@@ -6,6 +6,12 @@ const QuestionsBuilder = () => {
   const { values, setFieldValue } = useFormikContext();
   if (!Array.isArray(values.questions)) return null;
 
+  const getAnswerLabel = type => {
+    if (type === 'text') return 'Очікувана текстова відповідь:';
+    if (type === 'single') return 'Правильна відповідь (одна):';
+    if (type === 'multiple') return 'Правильні відповіді:';
+  };
+
   useEffect(() => {
     if (Array.isArray(values.questions)) {
       setFieldValue('theNumberOfQuestions', values.questions.length);
@@ -67,7 +73,7 @@ const QuestionsBuilder = () => {
                   </FieldArray>
                 )}
 
-                {question.type !== 'text' && (
+                {/* {question.type !== 'text' && (
                   <label>
                     Правильна відповідь:
                     <Field
@@ -76,7 +82,49 @@ const QuestionsBuilder = () => {
                       type="text"
                     />
                   </label>
+                )} */}
+
+                {/* {question.type === 'text' && (
+                  <label>
+                    Очікувана текстова відповідь:
+                    <Field
+                      name={`questions[${index}].correctAnswer`}
+                      placeholder="Введіть правильну відповідь"
+                      type="text"
+                    />
+                  </label>
                 )}
+
+                {question.type === 'single' && (
+                  <label>
+                    Правильна відповідь (одна):
+                    <Field
+                      name={`questions[${index}].correctAnswer`}
+                      placeholder="Введіть правильну відповідь"
+                      type="text"
+                    />
+                  </label>
+                )}
+
+                {question.type === 'multiple' && (
+                  <label>
+                    Правильні відповіді (через кому або іншим способом):
+                    <Field
+                      name={`questions[${index}].correctAnswer`}
+                      placeholder="Введіть правильні відповіді"
+                      type="text"
+                    />
+                  </label>
+                )} */}
+
+                <label>
+                  {getAnswerLabel(question.type)}
+                  <Field
+                    name={`questions[${index}].correctAnswer`}
+                    placeholder="Введіть відповідь"
+                    type="text"
+                  />
+                </label>
 
                 <button type="button" onClick={() => remove(index)}>
                   🗑 Видалити питання
