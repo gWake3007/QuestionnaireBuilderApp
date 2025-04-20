@@ -1,6 +1,6 @@
 import css from './Quiz_Form.module.css';
 import { Formik, Form } from 'formik';
-import { validationSchema } from '../../utils/quizValidationSchema.js';
+import { quizSchema } from '../../utils/quizValidationSchema.js';
 import Quiz_form_input from '../Quiz_form_input/Quiz_form_input.jsx';
 import QuestionsBuilder from '../QuestionsBuilder/QuestionsBuilder.jsx';
 
@@ -8,7 +8,7 @@ const Quiz_Form = ({ initialValues, onSubmit, isEdit = false }) => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={quizSchema}
       onSubmit={onSubmit}
     >
       {({ errors, touched }) => (

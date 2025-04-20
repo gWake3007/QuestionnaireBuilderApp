@@ -9,14 +9,30 @@ const QuestionsBuilder = () => {
   const getAnswerLabel = type => {
     if (type === 'text') return 'Очікувана текстова відповідь:';
     if (type === 'single') return 'Правильна відповідь (одна):';
-    if (type === 'multiple') return 'Правильні відповіді:';
+    if (type === 'multiple') return 'Правильні відповіді (кілька):';
   };
 
   useEffect(() => {
-    if (Array.isArray(values.questions)) {
-      setFieldValue('theNumberOfQuestions', values.questions.length);
-    }
+    values.questions.forEach((q, index) => {
+      if (
+        (q.type === 'single' || q.type === 'multiple') &&
+        !Array.isArray(q.options)
+      ) {
+        setFieldValue(`questions[${index}].options`, []);
+      }
+    });
   }, [values.questions, setFieldValue]);
+
+  const toggleMultipleAnswer = (index, option) => {
+    const currentAnswers = values.questions[index].correctAnswer || [];
+    const updatedAnswers = currentAnswers.includes(option)
+      ? currentAnswers.filter(a => a !== option)
+      : [...currentAnswers, option];
+
+    if (updatedAnswers.length <= values.questions[index].options.length) {
+      setFieldValue(`questions[${index}].correctAnswer`, updatedAnswers);
+    }
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -38,7 +54,21 @@ const QuestionsBuilder = () => {
 
                 <label>
                   Тип питання:
-                  <Field as="select" name={`questions[${index}].type`}>
+                  <Field
+                    as="select"
+                    name={`questions[${index}].type`}
+                    onChange={e => {
+                      const newType = e.target.value;
+                      setFieldValue(`questions[${index}].type`, newType);
+                      setFieldValue(
+                        `questions[${index}].correctAnswer`,
+                        newType === 'multiple' ? [] : ''
+                      );
+                      if (newType === 'text') {
+                        setFieldValue(`questions[${index}].options`, []);
+                      }
+                    }}
+                  >
                     <option value="text">Текст</option>
                     <option value="single">Один варіант</option>
                     <option value="multiple">Кілька варіантів</option>
@@ -57,6 +87,25 @@ const QuestionsBuilder = () => {
                               placeholder="Варіант"
                               type="text"
                             />
+                            {question.type === 'multiple' && (
+                              <input
+                                type="checkbox"
+                                checked={
+                                  Array.isArray(question.correctAnswer) &&
+                                  question.correctAnswer.includes(option)
+                                }
+                                onChange={() =>
+                                  toggleMultipleAnswer(index, option)
+                                }
+                              />
+                            )}
+                            {question.type === 'single' && (
+                              <Field
+                                type="radio"
+                                name={`questions[${index}].correctAnswer`}
+                                value={option}
+                              />
+                            )}
                             <button
                               type="button"
                               onClick={() => remove(optIndex)}
@@ -73,58 +122,16 @@ const QuestionsBuilder = () => {
                   </FieldArray>
                 )}
 
-                {/* {question.type !== 'text' && (
+                {question.type === 'text' && (
                   <label>
-                    Правильна відповідь:
+                    {getAnswerLabel(question.type)}
                     <Field
                       name={`questions[${index}].correctAnswer`}
-                      placeholder="Введіть правильну відповідь"
-                      type="text"
-                    />
-                  </label>
-                )} */}
-
-                {/* {question.type === 'text' && (
-                  <label>
-                    Очікувана текстова відповідь:
-                    <Field
-                      name={`questions[${index}].correctAnswer`}
-                      placeholder="Введіть правильну відповідь"
+                      placeholder="Очікувана відповідь"
                       type="text"
                     />
                   </label>
                 )}
-
-                {question.type === 'single' && (
-                  <label>
-                    Правильна відповідь (одна):
-                    <Field
-                      name={`questions[${index}].correctAnswer`}
-                      placeholder="Введіть правильну відповідь"
-                      type="text"
-                    />
-                  </label>
-                )}
-
-                {question.type === 'multiple' && (
-                  <label>
-                    Правильні відповіді (через кому або іншим способом):
-                    <Field
-                      name={`questions[${index}].correctAnswer`}
-                      placeholder="Введіть правильні відповіді"
-                      type="text"
-                    />
-                  </label>
-                )} */}
-
-                <label>
-                  {getAnswerLabel(question.type)}
-                  <Field
-                    name={`questions[${index}].correctAnswer`}
-                    placeholder="Введіть відповідь"
-                    type="text"
-                  />
-                </label>
 
                 <button type="button" onClick={() => remove(index)}>
                   🗑 Видалити питання

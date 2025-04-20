@@ -34,7 +34,13 @@ const EditQuizPage = () => {
           title: quiz.title,
           description: quiz.description,
           theNumberOfQuestions: quiz.theNumberOfQuestions,
-          questions: quiz.questions || [],
+          questions:
+            quiz.questions.map(q => ({
+              ...q,
+              correctAnswer:
+                q.correctAnswer ?? (q.type === 'multiple' ? [] : ''),
+              options: q.options ?? [],
+            })) || [],
         }}
         onSubmit={handleSubmit}
         isEdit={true}
