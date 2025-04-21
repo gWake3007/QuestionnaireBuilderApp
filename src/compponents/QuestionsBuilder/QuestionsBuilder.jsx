@@ -1,160 +1,144 @@
-import { useEffect } from 'react';
 import { FieldArray, Field, useFormikContext } from 'formik';
-import styles from './QuestionsBuilder.module.css';
+import { useEffect } from 'react';
+
+const defaultQuestion = {
+  question: '',
+  type: 'text',
+  options: [],
+  correctAnswer: '',
+};
 
 const QuestionsBuilder = () => {
   const { values, setFieldValue } = useFormikContext();
-  if (!Array.isArray(values.questions)) return null;
 
-  const getAnswerLabel = type => {
-    if (type === 'text') return 'Очікувана текстова відповідь:';
-    if (type === 'single') return 'Правильна відповідь (одна):';
-    if (type === 'multiple') return 'Правильні відповіді (кілька):';
-  };
-
+  // Фікс неправильних типів correctAnswer
   useEffect(() => {
-    values.questions.forEach((q, index) => {
-      if (
-        (q.type === 'single' || q.type === 'multiple') &&
-        !Array.isArray(q.options)
-      ) {
-        setFieldValue(`questions[${index}].options`, []);
-      }
-    });
-  }, [values.questions, setFieldValue]);
-
-  const toggleMultipleAnswer = (index, option) => {
-    const currentAnswers = values.questions[index].correctAnswer || [];
-    const updatedAnswers = currentAnswers.includes(option)
-      ? currentAnswers.filter(a => a !== option)
-      : [...currentAnswers, option];
-
-    if (updatedAnswers.length <= values.questions[index].options.length) {
-      setFieldValue(`questions[${index}].correctAnswer`, updatedAnswers);
-    }
-  };
+    const fixedQuestions = values.questions.map(q => ({
+      ...q,
+      correctAnswer:
+        q.type === 'multiple'
+          ? Array.isArray(q.correctAnswer)
+            ? q.correctAnswer
+            : []
+          : typeof q.correctAnswer === 'string'
+            ? q.correctAnswer
+            : '',
+    }));
+    setFieldValue('questions', fixedQuestions);
+    setFieldValue('theNumberOfQuestions', values.questions.length);
+  }, [values.questions.length, setFieldValue]);
 
   return (
-    <div className={styles.wrapper}>
+    <div>
       <h3>Питання</h3>
-
       <FieldArray name="questions">
         {({ push, remove }) => (
-          <div>
-            {values.questions.map((question, index) => (
-              <div key={index} className={styles.questionBlock}>
-                <label>
-                  Текст питання:
-                  <Field
-                    name={`questions[${index}].question`}
-                    placeholder="Введіть питання"
-                    type="text"
-                  />
-                </label>
+          <>
+            {values.questions.map((q, index) => (
+              <div
+                key={index}
+                style={{
+                  border: '1px solid #ccc',
+                  margin: '10px 0',
+                  padding: '10px',
+                }}
+              >
+                <label>Питання:</label>
+                <Field
+                  name={`questions[${index}].question`}
+                  placeholder="Питання"
+                />
 
-                <label>
-                  Тип питання:
-                  <Field
-                    as="select"
-                    name={`questions[${index}].type`}
-                    onChange={e => {
-                      const newType = e.target.value;
-                      setFieldValue(`questions[${index}].type`, newType);
-                      setFieldValue(
-                        `questions[${index}].correctAnswer`,
-                        newType === 'multiple' ? [] : ''
-                      );
-                      if (newType === 'text') {
-                        setFieldValue(`questions[${index}].options`, []);
-                      }
-                    }}
-                  >
-                    <option value="text">Текст</option>
-                    <option value="single">Один варіант</option>
-                    <option value="multiple">Кілька варіантів</option>
-                  </Field>
-                </label>
+                <label>Тип:</label>
+                <Field as="select" name={`questions[${index}].type`}>
+                  <option value="text">Текст</option>
+                  <option value="single">Одна правильна</option>
+                  <option value="multiple">Кілька правильних</option>
+                </Field>
 
-                {question.type !== 'text' && (
+                {(q.type === 'single' || q.type === 'multiple') && (
                   <FieldArray name={`questions[${index}].options`}>
-                    {({ push, remove }) => (
+                    {({ push: pushOption, remove: removeOption }) => (
                       <div>
-                        <label>Варіанти відповіді:</label>
-                        {(question.options || []).map((option, optIndex) => (
-                          <div key={optIndex} className={styles.option}>
+                        <label>Варіанти:</label>
+                        {q.options.map((opt, i) => (
+                          <div key={i}>
                             <Field
-                              name={`questions[${index}].options[${optIndex}]`}
-                              placeholder="Варіант"
-                              type="text"
+                              name={`questions[${index}].options[${i}]`}
+                              placeholder={`Варіант ${i + 1}`}
                             />
-                            {question.type === 'multiple' && (
-                              <input
-                                type="checkbox"
-                                checked={
-                                  Array.isArray(question.correctAnswer) &&
-                                  question.correctAnswer.includes(option)
-                                }
-                                onChange={() =>
-                                  toggleMultipleAnswer(index, option)
-                                }
-                              />
-                            )}
-                            {question.type === 'single' && (
-                              <Field
-                                type="radio"
-                                name={`questions[${index}].correctAnswer`}
-                                value={option}
-                              />
-                            )}
                             <button
                               type="button"
-                              onClick={() => remove(optIndex)}
+                              onClick={() => removeOption(i)}
                             >
-                              ❌
+                              Видалити
                             </button>
                           </div>
                         ))}
-                        <button type="button" onClick={() => push('')}>
-                          ➕ Додати варіант
+                        <button type="button" onClick={() => pushOption('')}>
+                          + Додати варіант
                         </button>
                       </div>
                     )}
                   </FieldArray>
                 )}
 
-                {question.type === 'text' && (
-                  <label>
-                    {getAnswerLabel(question.type)}
-                    <Field
-                      name={`questions[${index}].correctAnswer`}
-                      placeholder="Очікувана відповідь"
-                      type="text"
-                    />
-                  </label>
+                <label>Правильна відповідь:</label>
+                {q.type === 'text' && (
+                  <Field
+                    name={`questions[${index}].correctAnswer`}
+                    placeholder="Правильна відповідь"
+                  />
+                )}
+                {q.type === 'single' && (
+                  <Field as="select" name={`questions[${index}].correctAnswer`}>
+                    <option value="">-- Оберіть варіант --</option>
+                    {q.options.map((opt, i) => (
+                      <option key={i} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </Field>
+                )}
+                {q.type === 'multiple' && Array.isArray(q.correctAnswer) && (
+                  <FieldArray name={`questions[${index}].correctAnswer`}>
+                    {({ push: pushAns, remove: removeAns }) => (
+                      <div>
+                        {q.options.map((opt, i) => {
+                          const isChecked = q.correctAnswer.includes(opt);
+                          return (
+                            <label key={i}>
+                              <input
+                                type="checkbox"
+                                checked={isChecked}
+                                onChange={() => {
+                                  if (isChecked) {
+                                    const idx = q.correctAnswer.indexOf(opt);
+                                    removeAns(idx);
+                                  } else {
+                                    pushAns(opt);
+                                  }
+                                }}
+                              />
+                              {opt || `Варіант ${i + 1}`}
+                            </label>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </FieldArray>
                 )}
 
                 <button type="button" onClick={() => remove(index)}>
-                  🗑 Видалити питання
+                  Видалити питання
                 </button>
-
-                <hr />
               </div>
             ))}
 
-            <button
-              type="button"
-              onClick={() =>
-                push({
-                  question: '',
-                  type: 'text',
-                  options: [],
-                  correctAnswer: '',
-                })
-              }
-            >
-              ➕ Додати питання
+            <button type="button" onClick={() => push(defaultQuestion)}>
+              + Додати питання
             </button>
-          </div>
+          </>
         )}
       </FieldArray>
     </div>

@@ -14,7 +14,7 @@ const Quiz_List = () => {
     <>
       <ul className={css.list}>
         {filterQuizzes.map(quiz => (
-          <QuizCard key={quiz.id} quiz={quiz} />
+          <QuizCard key={quiz.id || index} quiz={quiz} />
         ))}
       </ul>
       <Modal_Quiz_Card quizzes={allQuizzes} />

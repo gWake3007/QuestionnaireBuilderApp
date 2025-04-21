@@ -11,21 +11,18 @@ const Quiz_Card = ({ quiz }) => {
     dispatch(openModal({ type: 'details', quizId: quiz.id }));
   };
   return (
-    <>
-      Quiz_Card
-      <li className={css.card}>
-        <button className={css.btn} type="button" onClick={handleOpenModal}>
-          OptionsModal
-          <CgMenuGridO />
-        </button>
-        <h2 className={css.title}>{quiz.title}</h2>
-        <p className={css.description}>{quiz.description}</p>
-        <p className={css.question}>
-          Кількість питань:
-          <span>{quiz.theNumberOfQuestions ?? 'Немає даних'}</span>
-        </p>
-      </li>
-    </>
+    <li className={css.card}>
+      <button className={css.btn} type="button" onClick={handleOpenModal}>
+        OptionsModal
+        <CgMenuGridO />
+      </button>
+      <h2 className={css.title}>{quiz.title}</h2>
+      <p className={css.description}>{quiz.description}</p>
+      <p className={css.question}>
+        Кількість питань:
+        <span>{quiz.theNumberOfQuestions ?? 'Немає даних'}</span>
+      </p>
+    </li>
   );
 };
 

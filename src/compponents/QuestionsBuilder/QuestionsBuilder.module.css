@@ -1,19 +1,31 @@
-.wrapper {
-  margin-top: 20px;
-  padding: 10px;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
+.container {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
 }
 
 .questionBlock {
-  background-color: #ca1111;
-  padding: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px dashed #aaa;
   border-radius: 8px;
 }
 
-.option {
+.optionList {
+  margin-top: 0.5rem;
+}
+
+.optionItem {
   display: flex;
-  gap: 10px;
-  margin-bottom: 5px;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.addBtn,
+.removeBtn,
+.addQuestionBtn,
+.removeQuestionBtn {
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
 }

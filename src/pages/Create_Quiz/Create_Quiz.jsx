@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Quiz_Form from '../../compponents/Quiz_Form/Quiz_Form.jsx';
 import { addQuiz } from '../../redux/quiz/operations.js';
 
 const CreateQuizPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (values, { resetForm }) => {
     // Валідація чи є питання
@@ -14,6 +16,7 @@ const CreateQuizPage = () => {
     }
 
     dispatch(addQuiz(values));
+    navigate('/');
     resetForm();
   };
 
@@ -26,7 +29,14 @@ const CreateQuizPage = () => {
           title: '',
           description: '',
           theNumberOfQuestions: 0,
-          questions: [],
+          questions: [
+            {
+              question: '',
+              type: 'text',
+              options: [],
+              correctAnswer: '',
+            },
+          ],
         }}
         onSubmit={handleSubmit}
         isEdit={false}
